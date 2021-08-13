@@ -1,0 +1,120 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+### installs all libs
+```{R}
+install.packages("dplyr")
+install.packages("RMySQL")
+install.packages("lubridate")
+install.packages("openxlsx")
+install.packages("tidyverse")
+install.packages("stringr")
+install.packages("readr")
+
+utils::install.packages()
+```
+### Loads libraries
+```{R}
+library(dplyr)
+require(dplyr)
+```
+
+### folder navigation
+```{R}
+getwd()
+setwd(getwd())
+```
+
+## Data types
+```{R}
+#string
+string <- "this is a string"
+class(string)
+typeof(string)
+length(string)
+nchar(string)
+#double
+number <- 2344
+class(number)
+typeof(number)
+length(number)
+#int
+integer <- 3L
+class(number)
+typeof(number)
+#logical
+logical <- FALSE #F=0, T=1
+class(logical)
+typeof(logical)
+
+#R starts in 0
+# Vector
+vector <- c("hola", "a", "todos")
+length(vector)
+vector[2] 
+
+#Factores
+vector2 <- c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k")
+factor <- factor(vector2)
+
+#Factores Ordenados
+factor2 <- ordered(factor, levels = c("a", "b", "c", "d", "e"))
+
+
+#Data Frames
+df <- data.frame(
+  c1 = c("a", "b", "c", "d", "e", "f"),
+  c2 = 1:6,
+  c3 = letters[1:6],
+  stringsAsFactors = FALSE
+)
+
+View(df)
+
+dfCopy <- data.frame(
+  c1 = c("a", "b", "c", "d", "e", "f"),
+  c2 = 1:6,
+  c3 = letters[1:6]
+)
+
+str(df)
+
+names(df) # nombres de las columnas
+names(df) <- c("c1", "c2", "c3")# same length
+names(df)
+
+colnames(df)
+head(df, 3)
+tail(df, 1)
+nrow(df)
+ncol(df)
+
+```
+
+
+
+# WEEK 2
+
+```{r}
+#new columns
+df$Column1
+df$Column4 <- 11:16
+df[4,3]
+
+#df [fila, columna]
+df[1,]
+
+#indexing
+
+##como agregar filas
+new_elements <- c("new", 7, "g", 17)
+
+#cbind
+rbind(df, new_elements)
+
+df_copy$col1 <- factor(df_copy$col1) #cambiar tipo de dato
+
+rbind(df_copy, c("new", 7, "g"))
+```
