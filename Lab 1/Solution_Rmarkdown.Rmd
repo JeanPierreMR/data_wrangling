@@ -1,0 +1,88 @@
+---
+title: "Solution_Rmarkdown"
+output: html_document
+---
+## Primer problema
+
+```{r, echo=FALSE, message=FALSE}
+#install.packages("readxl")
+#install.packages("fs")
+#install.packages("dplyr")
+#install.packages('writexl')
+#install.packages("raster")
+#install.packages("stringr")
+#install.packages("NLP")
+```
+
+```{r, echo=FALSE, message=FALSE}
+library("readxl")
+library("fs")
+library("dplyr")
+library("writexl")
+library("raster")
+library("stringr") 
+library("NLP")
+```
+
+```{r p1_lectura_archivos}
+files <- list.files(
+        path=paste(getwd(),"/data", sep = ""),
+        pattern="*.xlsx",
+        full.names=TRUE)
+```
+
+```{r p1_fusing_files}
+new_data = readxl::read_excel(files[1])
+#adding date column
+fecha_v<-rep(gsub(".xlsx", "", path_file(files[1])),
+       times=dim(new_data)[1])
+new_data[,"Fecha"] = fecha_v
+new_data = new_data[c("COD_VIAJE", "CLIENTE", "UBICACION", "CANTIDAD", "PILOTO", "Q", "CREDITO", "UNIDAD", "Fecha")] 
+
+for (x in 2:(length(files)-1)) {
+  temporal_data = readxl::read_excel(files[x])
+  
+  #adding date column
+  fecha_v<-rep(gsub(".xlsx", "", path_file(files[1])),
+               times=dim(temporal_data)[1])
+  temporal_data[,"Fecha"] = fecha_v
+  
+  temporal_data = temporal_data[c("COD_VIAJE", "CLIENTE", "UBICACION", "CANTIDAD", "PILOTO", "Q", "CREDITO", "UNIDAD", "Fecha")] 
+  new_data = bind_rows(new_data, temporal_data)
+}
+```
+
+```{r p1_printing_output}
+writexl::write_xlsx(new_data, "result.xlsx")
+```
+
+##Segundo problema
+```{r p2}
+#creating vectors
+vec1 <- sample(1:20, 100, replace=TRUE)
+vec2 <- sample(1:20, 100, replace=TRUE)
+vec3 <- sample(1:20, 100, replace=TRUE)
+vec4 <- sample(1:20, 100, replace=TRUE)
+#list of vectors
+list_vectors = list(vec1, vec2, vec3, vec4)
+#getting mode
+result = lapply(list_vectors, modal)
+result
+```
+##Tercer problema
+
+
+```{r p3_lectura_archivos}
+#Getting file name
+files <- list.files(
+  path=paste(getwd(),"/data", sep = ""),
+  pattern="*.txt",
+  full.names=TRUE)
+```
+
+```{r p3_cargando_a_df}
+  #using delim
+  data = read.delim(file = files[1], header = TRUE, sep = "|")
+  #using delim2
+  data2 = read.delim2(file = files[1], header = TRUE, sep = "|")
+```
