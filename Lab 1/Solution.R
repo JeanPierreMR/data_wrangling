@@ -63,3 +63,8 @@ files <- list.files(
 
 data = read.delim(file = files[1], header = TRUE, sep = "|")
 data2 = read.delim2(file = files[1], header = TRUE, sep = "|")
+
+
+install.packages("leaflet")
+install.packages("crosstalk")
+install.packages("DT")
