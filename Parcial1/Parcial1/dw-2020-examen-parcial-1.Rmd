@@ -88,19 +88,81 @@ library(dplyr)
 
 
 ##### 2. Al momento de filtrar en SQL, ¿cuál keyword cumple las mismas funciones que el keyword `OR`  para filtrar uno o más elementos una misma columna?
+<span style="color:blue">
+Dependiendo el contexto, si es para remplazar condiciones de igualdad, se puede utilizar `IN`, tambien se puede realizar 2 querys y unirlas por medio de `UNION`
+</span>
 
 ##### 3. ¿Por qué en R utilizamos funciones de la familia apply (lapply,vapply) en lugar de utilizar ciclos?
+<span style="color:blue">
+Se utiliza porque es mucho más legible que utilizar ciclos anidados.
+</span>
 
 ##### 5. ¿Cuál es la forma correcta de cargar un archivo de texto donde el delimitador es `:`?
+<span style="color:blue">
+Se puede utilizar `read_delim()` por ejemplo: `read.delim('archivo.txt', sep=':')`
+</span>
+
 ##### 6. ¿Qué es un vector y en qué se diferencia en una lista en R?
+<span style="color:blue">
+Un vector es un conjunto de datos del mismo tipo.
+</span>
+
+<span style="color:blue">
+La lista es mucho más dinamica que el vector, en el sentido que se puede hacer una lista de una combinacion de distintos tipos de datos. Además una lista puede contener otras listas y vectores
+</span>
+
+
 ##### 7. ¿Qué pasa si quiero agregar una nueva categoría a un factor que no se encuentra en los niveles existentes?
+<span style="color:blue">
+Se puede agregar usando append al vector de los niveles
+EJEMPLO:
+```{r}
+data = c(1,2,2,3,1,2,3,3,1,2,3,3,1)
+fdata = factor(data)
+fdata
+levels(fdata) <- append(levels(fdata), 4) 
+fdata
+```
+</span>
+
 ##### 8. Si en un dataframe, a una variable de tipo `factor` le agrego un nuevo elemento que *no se encuentra en los niveles existentes*, ¿cuál sería el resultado esperado y por qué?
-#####    * El nuevo elemento
+#####    *    * evo elemento
 #####    * `NA`
-    
+<span style="color:blue">
+Se espera como resultado `NA`
+
+replicacion del error:
+```{r}
+df = data.frame( 
+  "str" = c('str1', 'str2', 'str3'), 
+  "num" = c(22, 25, 45),
+  stringsAsFactors = T
+) 
+df[1, 1] = 34
+
+df
+```
+</span>
+
+
+##### Extra: ¿Cuántos posibles exámenes de 5 preguntas se pueden realizar utilizando como banco las diez acá presentadas? (responder con código de R.)
+
+```{r}
+n_preguntas_examen <- 5
+n_total_preguntas <- 10
+n_posibles_examenes <- choose(n_total_preguntas, n_preguntas_examen)
+n_posibles_examenes
+```
+
+
+
+
+
+
+
 ## II. Preguntas prácticas
 
-### A. De los clientes que están en más de un país,¿cuál cree que es el más rentable y por qué?
+#### A. De los clientes que están en más de un país,¿cuál cree que es el más rentable y por qué?
 
 ```{r }
 data <- readRDS("parcial_anonimo.rds")
@@ -116,14 +178,19 @@ clientes_2paises <- data %>%
             n_ventas_positivas = sum(Venta>0),
             n_retorno_ventas_portenaje = (sum(Venta<0)/n()) ) %>% 
   filter(num_paises > 1)
-
+  
 ```
 
+<span style="color:blue">
+Esto dependera del costo de la devolucion. Si este es bajo, entonces el cliente 044118d4 es el qué mejor promedio por venta tiene, lo que significa que suele comprar más y es con el cliente que hemos ganado más dinero.
+</span>
+
+<span style="color:blue">
+Si el costo de la devolución es alto, entonces el cliente c53868a0 es el cliente más rentable, pues tiene el tercer promedio más alto en ventas, así como ser el tercer cliente con más ventas. Más importante solo tiene una devolucion del 0.2%, comparado a un 2.2% y un 3.7% de los primeros dos clientes con mejor promedio por compra.
+</span>
 
 
-
-
-## B. Estrategia de negocio ha decidido que ya no operará en aquellos territorios cuyas pérdidas sean "considerables". Bajo su criterio, ¿cuáles son estos territorios y por qué ya no debemos operar ahí?
+#### B. Estrategia de negocio ha decidido que ya no operará en aquellos territorios cuyas pérdidas sean "considerables". Bajo su criterio, ¿cuáles son estos territorios y por qué ya no debemos operar ahí?
 
 ```{r }
 territorios <- data %>% 
@@ -133,7 +200,17 @@ territorios <- data %>%
             avg_ventas = mean(Venta), 
             n_ventas = n(),
             n_retorno_ventas = sum(Venta<0),
-            n_retorno_ventas = sum(Venta>0),
-            n_retorno_ventas_portenaje = (sum(Venta<0)/n())) 
+            n_ventas_positivas = sum(Venta>0),
+            n_retorno_ventas_portenaje = (sum(Venta<0)/n()),
+            ventas_neg = sum(Venta[Venta<0]),
+            ventas_neg_porcentaje = sum(Venta[Venta<0])/sum(Venta[Venta>0]) ) 
 
 ```
+
+<span style="color:blue">
+8682908b, 68de9759, 0320288f y 45c0376d tienen un porcentaje de venta negativo mayor al 3% los demás estan bastante cerca entre sí. El territorio 0320288f tiene solamente 106 ventas registradas, de las cuales 65 estan en 0, por lo que consideraría que hay que esperar a ver que no sea únicamente una casualidad.
+</span>
+
+<span style="color:blue">
+Entonces considero que no se debe operar en los territorios: 8682908b, 68de9759, y 45c0376d.
+</span>
