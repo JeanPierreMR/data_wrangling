@@ -155,3 +155,11 @@ df %>%
   hc_subtitle(text="<i>2019 tuvo la menor variedad, mientras 2015  ha sido el año con mas diversidad de artistas<i>")
   
 
+●	¿Debemos invertir en la contratación de más personal?
+  ●	¿Debemos invertir en la compra de más vehículos de distribución? ¿Cuántos y de que tipo?
+  ●	Las tarifas actuales ¿son aceptables por el cliente?
+  ●	¿Nos están robando los pilotos?
+  ●	¿Qué estrategias debo seguir?
+  Adicionalmente, quieren entender visualmente:
+  ●	80-20 de clientes y cuáles de ellos son los más importantes
+●	Mejores pilotos y transportes más efectivos.
