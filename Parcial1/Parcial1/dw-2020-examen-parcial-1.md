@@ -233,6 +233,18 @@ clientes_2paises <- data %>%
   filter(num_paises > 1)
 ```
 
+<span style="color:blue"> Esto dependera del costo de la devolucion. Si
+este es bajo, entonces el cliente 044118d4 es el qué mejor promedio por
+venta tiene, lo que significa que suele comprar más y es con el cliente
+que hemos ganado más dinero. </span>
+
+<span style="color:blue"> Si el costo de la devolución es alto, entonces
+el cliente c53868a0 es el cliente más rentable, pues tiene el tercer
+promedio más alto en ventas, así como ser el tercer cliente con más
+ventas. Más importante solo tiene una devolucion del 0.2%, comparado a
+un 2.2% y un 3.7% de los primeros dos clientes con mejor promedio por
+compra. </span>
+
 #### B. Estrategia de negocio ha decidido que ya no operará en aquellos territorios cuyas pérdidas sean “considerables”. Bajo su criterio, ¿cuáles son estos territorios y por qué ya no debemos operar ahí?
 
 ``` r
@@ -243,6 +255,17 @@ territorios <- data %>%
             avg_ventas = mean(Venta), 
             n_ventas = n(),
             n_retorno_ventas = sum(Venta<0),
-            n_retorno_ventas = sum(Venta>0),
-            n_retorno_ventas_portenaje = (sum(Venta<0)/n())) 
+            n_ventas_positivas = sum(Venta>0),
+            n_retorno_ventas_portenaje = (sum(Venta<0)/n()),
+            ventas_neg = sum(Venta[Venta<0]),
+            ventas_neg_porcentaje = sum(Venta[Venta<0])/sum(Venta[Venta>0]) ) 
 ```
+
+<span style="color:blue"> 8682908b, 68de9759, 0320288f y 45c0376d tienen
+un porcentaje de venta negativo mayor al 3% los demás estan bastante
+cerca entre sí. El territorio 0320288f tiene solamente 106 ventas
+registradas, de las cuales 65 estan en 0, por lo que consideraría que
+hay que esperar a ver que no sea únicamente una casualidad. </span>
+
+<span style="color:blue"> Entonces considero que no se debe operar en
+los territorios: 8682908b, 68de9759, y 45c0376d. </span>
