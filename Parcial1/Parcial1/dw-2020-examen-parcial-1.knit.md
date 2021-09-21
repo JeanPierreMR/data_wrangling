@@ -23,14 +23,17 @@ Indicaciones generales:
 * Ingrese su número de carné en  `set.seed()` y corra el chunk de R para determinar cuáles preguntas debe responder.
 
 
-```{r, echo=TRUE, cache=TRUE}
 
+```r
 set.seed("20190435") 
 v<- 1:10
 preguntas <-sort(sample(v, size = 6, replace = FALSE ))
 
 paste0("Mis preguntas a resolver son: ",paste0(preguntas,collapse = ", "))
+```
 
+```
+## [1] "Mis preguntas a resolver son: 2, 3, 5, 6, 7, 8"
 ```
 
 
@@ -78,9 +81,27 @@ B. Estrategia de negocio ha decidido que ya no operará en aquellos territorios 
 # RESPUESTAS
 
 ### Carga de librarías
-```{r r_librerías}
+
+```r
 #Carga de librerías
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
 ```
 
 ## I. Preguntas teóricas
@@ -116,12 +137,26 @@ La lista es mucho más dinamica que el vector, en el sentido que se puede hacer 
 <span style="color:blue">
 Se puede agregar usando append al vector de los niveles
 EJEMPLO:
-```{r}
+
+```r
 data = c(1,2,2,3,1,2,3,3,1,2,3,3,1)
 fdata = factor(data)
 fdata
+```
+
+```
+##  [1] 1 2 2 3 1 2 3 3 1 2 3 3 1
+## Levels: 1 2 3
+```
+
+```r
 levels(fdata) <- append(levels(fdata), 4) 
 fdata
+```
+
+```
+##  [1] 1 2 2 3 1 2 3 3 1 2 3 3 1
+## Levels: 1 2 3 4
 ```
 </span>
 
@@ -132,26 +167,46 @@ fdata
 Se espera como resultado `NA`
 
 replicacion del error:
-```{r}
+
+```r
 df = data.frame( 
   "str" = c('str1', 'str2', 'str3'), 
   "num" = c(22, 25, 45),
   stringsAsFactors = T
 ) 
 df[1, 1] = 34
+```
 
+```
+## Warning in `[<-.factor`(`*tmp*`, iseq, value = 34): invalid factor level, NA
+## generated
+```
+
+```r
 df
+```
+
+```
+##    str num
+## 1 <NA>  22
+## 2 str2  25
+## 3 str3  45
 ```
 </span>
 
 
 ##### Extra: ¿Cuántos posibles exámenes de 5 preguntas se pueden realizar utilizando como banco las diez acá presentadas? (responder con código de R.)
 
-```{r}
+
+```r
 n_preguntas_examen <- 5
 n_total_preguntas <- 10
 n_posibles_examenes <- choose(n_total_preguntas, n_preguntas_examen)
 n_posibles_examenes
+```
+
+```
+## [1] 252
 ```
 
 
@@ -164,7 +219,8 @@ n_posibles_examenes
 
 #### A. De los clientes que están en más de un país,¿cuál cree que es el más rentable y por qué?
 
-```{r }
+
+```r
 data <- readRDS("parcial_anonimo.rds")
 
 clientes_2paises <- data %>% 
@@ -178,7 +234,6 @@ clientes_2paises <- data %>%
             n_ventas_positivas = sum(Venta>0),
             n_retorno_ventas_portenaje = (sum(Venta<0)/n()) ) %>% 
   filter(num_paises > 1)
-  
 ```
 
 <span style="color:blue">
@@ -192,7 +247,8 @@ Si el costo de la devolución es alto, entonces el cliente c53868a0 es el client
 
 #### B. Estrategia de negocio ha decidido que ya no operará en aquellos territorios cuyas pérdidas sean "considerables". Bajo su criterio, ¿cuáles son estos territorios y por qué ya no debemos operar ahí?
 
-```{r }
+
+```r
 territorios <- data %>% 
   select(Territorio, Pais, Venta) %>% 
   group_by(Territorio) %>% 
@@ -204,7 +260,6 @@ territorios <- data %>%
             n_retorno_ventas_portenaje = (sum(Venta<0)/n()),
             ventas_neg = sum(Venta[Venta<0]),
             ventas_neg_porcentaje = sum(Venta[Venta<0])/sum(Venta[Venta>0]) ) 
-
 ```
 
 <span style="color:blue">
